@@ -23,8 +23,7 @@ for moduleScript in glob.glob(pjoin(pdir(__file__),"*.py")):
                 MODDED_MODULES[moduleName]=testAttr
             break
     else:
-        continue
-    raise Exception(f"Module was not found in the script `{moduleName}.py`")
+        raise Exception(f"Module was not found in the script `{moduleName}.py`")
 
 async def cmd_modules(channel, author, parts):
     list_ = lambda d: ', '.join(f"`{x}`" for x in d)
