@@ -36,11 +36,12 @@ MORSE_CODE = {
 DOT_LENGTH = 45
 
 class MorseCode(modules.Module):
+    identifiers = ['morseCode']
     display_name = "Morse Code"
     manual_name = "Morse Code"
     help_text = "`{cmd} tx 3.545`, `{cmd} tx 545`, `{cmd} tx 3.545 MHz`, or `{cmd} transmit ...` to transmit on 3.545 MHz."
     module_score = 3
-    vanilla=True
+    vanilla = True
 
     WORDS = {
         "shell":  505,

@@ -6,11 +6,12 @@ from functools import lru_cache
 from wand.image import Image
 
 class SimonSays(modules.Module):
+    identifiers = ['simonSays']
     display_name = "Simon Says"
     manual_name = "Simon Says"
     help_text = "`{cmd} press red green blue yellow`, `{cmd} press rgby`. You must include the input from any previous stages."
     module_score = 3
-    vanilla=True
+    vanilla = True
 
     class Color(enum.Enum):
         red = enum.auto()

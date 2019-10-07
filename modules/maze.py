@@ -4,11 +4,12 @@ import random
 import modules
 
 class Maze(modules.Module):
+    identifiers = ['maze']
     display_name = "Maze"
     manual_name = "Maze"
     help_text = "`{cmd} move up down left right`, `{cmd} move udlr` - make a series of moves."
     module_score = 2
-    vanilla=True
+    vanilla = True
 
     class Direction(enum.Flag):
         nothing = 0

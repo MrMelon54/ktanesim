@@ -2,11 +2,12 @@ import random
 import modules
 
 class Keypad(modules.Module):
+    identifiers = ['keypad']
     display_name = "Keypad"
     manual_name = "Keypad"
     help_text = "`{cmd} press 1 3 2 4` or `{cmd} press 1324` or `{cmd} press tl bl tr br`. Partial solutions allowed."
     module_score = 1
-    vanilla=True
+    vanilla = True
 
     BUTTONS = ['tl', 'tr', 'bl', 'br']
 

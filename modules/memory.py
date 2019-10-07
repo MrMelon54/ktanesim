@@ -2,11 +2,12 @@ import random
 import modules
 
 class Memory(modules.Module):
+    identifiers = ['memory']
     display_name = "Memory"
     manual_name = "Memory"
     help_text = "`{cmd} pos 2` or `{cmd} position 2` - press the button in the second position. `{cmd} lab 4` or `{cmd} label 4` - press the button labeled \"4\"."
     module_score = 4
-    vanilla=True
+    vanilla = True
 
     def __init__(self, bomb, ident):
         super().__init__(bomb, ident)

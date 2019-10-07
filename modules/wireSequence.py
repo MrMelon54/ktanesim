@@ -5,11 +5,12 @@ import modules
 import edgework
 
 class WireSequence(modules.Module):
+    identifiers = ['wireSequence']
     display_name = "Wire Sequence"
     manual_name = "Wire Sequence"
     help_text = "`{cmd} cut 7` - cut wire 7. `{cmd} down`, `{cmd} d` - go to the next panel. `{cmd} up`, `{cmd} u` - go back to the previous panel. `{cmd} cut 1 3 d` - cut mutiple wires and continue."
     module_score = 4
-    vanilla=True
+    vanilla = True
 
     @enum.unique
     class Color(enum.Enum):

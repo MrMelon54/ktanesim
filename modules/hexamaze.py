@@ -4,6 +4,7 @@ import enum
 import math
 
 class Hexamaze(modules.Module):
+    identifiers = ['hexamaze']
     display_name = "Hexamaze"
     manual_name = "Hexamaze"
     help_text = "Specify movements as clockface (`{cmd} move 12 2 6 4 8`), cardinal (`{cmd} move n ne s se sw`) or directions (`{cmd} move up upleft downright` or `{cmd} move u ul dr`)."

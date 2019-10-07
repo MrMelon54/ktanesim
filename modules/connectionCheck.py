@@ -2,6 +2,7 @@ import modules
 import random
 
 class ConnectionCheck(modules.Module):
+    identifiers = ['connectionCheck']
     display_name = "Connection Check"
     manual_name = "Connection Check"
     help_text = "Submit an answer with `{cmd} submit red green true false` - top left first, then top right, bottom left, bottom right. You can also use any of: `yes no y n t f r g`. Spaces between single letters are optional."
