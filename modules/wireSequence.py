@@ -4,6 +4,7 @@ import enum
 import modules
 import edgework
 
+
 class WireSequence(modules.Module):
     identifiers = ['wireSequence']
     display_name = "Wire Sequence"
@@ -62,7 +63,8 @@ class WireSequence(modules.Module):
         for color in WireSequence.Color:
             for _ in range(9):
                 self.wires.append((color, random.randint(0, 2)))
-        self.wires = random.sample(self.wires, 10) # replicating an off-by-one error
+        # replicating an off-by-one error
+        self.wires = random.sample(self.wires, 10)
         self.wires += [None] * 3
         random.shuffle(self.wires)
         # if the first page is empty, all the other pages will be full
@@ -70,13 +72,14 @@ class WireSequence(modules.Module):
             self.wires[random.randint(0, 2)] = self.wires[3]
             self.wires[3] = None
 
-        self.wires.pop() # remove the additional wire caused by the off-by-one error
+        self.wires.pop()  # remove the additional wire caused by the off-by-one error
 
         self.should_cut = [False] * 12
         self.cut = [False] * 12
         counts = {}
         for index, wire in enumerate(self.wires):
-            if wire is None: continue
+            if wire is None:
+                continue
             color, to = wire
             if color not in counts:
                 counts[color] = 0
@@ -112,7 +115,8 @@ class WireSequence(modules.Module):
                 wire = self.wires[wire_index]
                 if wire is not None:
                     color, to = wire
-                    path = WireSequence.PATHS_CUT[i, to] if self.cut[wire_index] else WireSequence.PATHS_UNCUT[i, to]
+                    path = WireSequence.PATHS_CUT[i,
+                                                  to] if self.cut[wire_index] else WireSequence.PATHS_UNCUT[i, to]
                     svg += f'<path fill="{color.value}" stroke="#000" d="{path}"/>'
 
         svg += f'</svg>'

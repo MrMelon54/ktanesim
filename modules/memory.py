@@ -1,6 +1,7 @@
 import random
 import modules
 
+
 class Memory(modules.Module):
     identifiers = ['memory']
     display_name = "Memory"
@@ -23,7 +24,8 @@ class Memory(modules.Module):
     def randomize(self):
         self.display = random.randint(1, 4)
         random.shuffle(self.buttons)
-        self.log(f"Randomized on stage {self.stage}. Display is {self.display}. Buttons: {' '.join(map(str, self.buttons))}")
+        self.log(
+            f"Randomized on stage {self.stage}. Display is {self.display}. Buttons: {' '.join(map(str, self.buttons))}")
 
     def get_svg(self, led):
         svg = (
@@ -64,24 +66,35 @@ class Memory(modules.Module):
             await self.handle_strike(author)
 
     def get_solution(self):
-        self.log(f"Position history: {' '.join(map(str, self.pressed_positions))}")
+        self.log(
+            f"Position history: {' '.join(map(str, self.pressed_positions))}")
         self.log(f"Label history: {' '.join(map(str, self.pressed_labels))}")
 
         if self.stage == 0:
             return [1, 1, 2, 3][self.display - 1]
         elif self.stage == 1:
-            if self.display == 1:   return self.buttons.index(4)
-            elif self.display == 3: return 0
-            else:                   return self.pressed_positions[0]
+            if self.display == 1:
+                return self.buttons.index(4)
+            elif self.display == 3:
+                return 0
+            else:
+                return self.pressed_positions[0]
         elif self.stage == 2:
-            if self.display == 1:   return self.buttons.index(self.pressed_labels[1])
-            elif self.display == 2: return self.buttons.index(self.pressed_labels[0])
-            elif self.display == 3: return 2
-            else:                   return self.buttons.index(4)
+            if self.display == 1:
+                return self.buttons.index(self.pressed_labels[1])
+            elif self.display == 2:
+                return self.buttons.index(self.pressed_labels[0])
+            elif self.display == 3:
+                return 2
+            else:
+                return self.buttons.index(4)
         elif self.stage == 3:
-            if self.display == 1:   return self.pressed_positions[0]
-            elif self.display == 2: return 0
-            else:                   return self.pressed_positions[1]
+            if self.display == 1:
+                return self.pressed_positions[0]
+            elif self.display == 2:
+                return 0
+            else:
+                return self.pressed_positions[1]
         else:
             return self.buttons.index(self.pressed_labels[[0, 1, 3, 2][self.display - 1]])
 

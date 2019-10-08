@@ -4,6 +4,7 @@ import modules
 import random
 import cairosvg
 
+
 class Password(modules.Module):
     identifiers = ['password']
     display_name = "Password"
@@ -34,9 +35,11 @@ class Password(modules.Module):
             if match == self.solution:
                 continue
 
-            wrong_positions = [pos for pos in range(5) if match[pos] != self.solution[pos]]
+            wrong_positions = [pos for pos in range(
+                5) if match[pos] != self.solution[pos]]
             position = random.choice(wrong_positions)
-            self.log(f"Removing false match by modifying column {position}: {match}")
+            self.log(
+                f"Removing false match by modifying column {position}: {match}")
             self.spinners[position].remove(match[position])
 
         for position in range(5):
@@ -46,7 +49,8 @@ class Password(modules.Module):
             random.shuffle(self.spinners[position])
 
         assert list(self.get_matches()) == [self.solution]
-        spinners_str = '\n'.join(''.join(map(str, x)) for x in zip(*self.spinners))
+        spinners_str = '\n'.join(''.join(map(str, x))
+                                 for x in zip(*self.spinners))
         self.log(f"Spinners:\n\n{spinners_str}")
 
     def get_matches(self):
@@ -61,19 +65,19 @@ class Password(modules.Module):
         return True
 
     def get_image(self, led):
-        svg = ( '<svg viewBox="0 0 348 348" fill="none" stroke="none" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">'
-            '<path stroke="#000" fill="#fff" d="M5 5h338v338h-338z"/>'
-            f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
-            '<path stroke="#000" d="M124 289h100v40h-100z"/>'
-            '<text fill="#000" text-anchor="middle" x="174" y="317" style="font-family:sans-serif;font-size:16pt;">SUBMIT</text>'
-            '<path fill="#000" stroke="#000" d="M44 99h260v150h-260zM74 80l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zM74 268l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6z"/>'
-            '<path fill="#fff" d="M50 105h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48z"/>')
+        svg = ('<svg viewBox="0 0 348 348" fill="none" stroke="none" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">'
+               '<path stroke="#000" fill="#fff" d="M5 5h338v338h-338z"/>'
+               f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
+               '<path stroke="#000" d="M124 289h100v40h-100z"/>'
+               '<text fill="#000" text-anchor="middle" x="174" y="317" style="font-family:sans-serif;font-size:16pt;">SUBMIT</text>'
+               '<path fill="#000" stroke="#000" d="M44 99h260v150h-260zM74 80l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zm50 0l3 5h-6zM74 268l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6zm50 0l3-5h-6z"/>'
+               '<path fill="#fff" d="M50 105h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48zm50 0h48v138h-48z"/>')
 
         for pos, letters, index in zip(range(5), self.spinners, self.positions):
             x = 74 + pos * 50
             svg += (f'<circle cx="{x}" cy="83" r="9" stroke="#000"/>'
-                f'<circle cx="{x}" cy="265" r="9" stroke="#000"/>'
-                f'<text fill="#000" text-anchor="middle" x="{x}" y="188" style="font-family:sans-serif;font-size:28pt;">{letters[index].upper()}</text>')
+                    f'<circle cx="{x}" cy="265" r="9" stroke="#000"/>'
+                    f'<text fill="#000" text-anchor="middle" x="{x}" y="188" style="font-family:sans-serif;font-size:28pt;">{letters[index].upper()}</text>')
         svg += '</svg>'
         return cairosvg.svg2png(svg.encode())
 
@@ -90,7 +94,8 @@ class Password(modules.Module):
             for column in self.cycle:
                 first = True
                 for _ in range(6):
-                    modules.gif_append(im, self.get_image(led), 200 if first else 100)
+                    modules.gif_append(im, self.get_image(
+                        led), 200 if first else 100)
                     first = False
                     self.positions[column] = (self.positions[column] + 1) % 6
 
@@ -104,7 +109,8 @@ class Password(modules.Module):
         word = parts[0].lower()
         for position, letter in enumerate(word):
             if letter in self.spinners[position]:
-                self.positions[position] = self.spinners[position].index(letter)
+                self.positions[position] = self.spinners[position].index(
+                    letter)
             else:
                 return await self.handle_unsubmittable(author)
 

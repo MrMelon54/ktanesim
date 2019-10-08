@@ -4,6 +4,7 @@ import enum
 import modules
 import edgework
 
+
 class ComplicatedWires(modules.Module):
     identifiers = ['complicatedWires']
     display_name = "Complicated Wires"
@@ -74,12 +75,14 @@ class ComplicatedWires(modules.Module):
     def __init__(self, bomb, ident):
         super().__init__(bomb, ident)
         wire_count = random.randint(4, 9)
-        if wire_count > 6: wire_count = 6
+        if wire_count > 6:
+            wire_count = 6
         self.positions = sorted(random.sample(range(6), wire_count))
         self.cut = [False] * wire_count
         self.should_cut = [False] * wire_count
 
-        colorings = list(itertools.chain(ComplicatedWires.Color, itertools.combinations(ComplicatedWires.Color, 2)))
+        colorings = list(itertools.chain(ComplicatedWires.Color,
+                                         itertools.combinations(ComplicatedWires.Color, 2)))
         self.wire_colors = []
         self.leds = []
         self.stars = []
@@ -93,7 +96,8 @@ class ComplicatedWires(modules.Module):
             if self.wire_to_rules(index) in cut_combinations:
                 encountered_cut = True
                 self.should_cut[index] = True
-            self.log(f'Adding wire: {self.wire_to_string(-1)} - {"should cut" if self.should_cut[index] else "should NOT cut"}')
+            self.log(
+                f'Adding wire: {self.wire_to_string(-1)} - {"should cut" if self.should_cut[index] else "should NOT cut"}')
 
         if not encountered_cut:
             self.log('No wires to cut, overwriting a random wire...')
@@ -122,7 +126,8 @@ class ComplicatedWires(modules.Module):
     def set_wire_rules(self, index, rules):
         red, blue, led, star = rules
         if red and blue:
-            self.wire_colors[index] = (ComplicatedWires.Color.red, ComplicatedWires.Color.blue)
+            self.wire_colors[index] = (
+                ComplicatedWires.Color.red, ComplicatedWires.Color.blue)
         elif red:
             self.wire_colors[index] = ComplicatedWires.Color.red
         elif blue:
@@ -131,7 +136,8 @@ class ComplicatedWires(modules.Module):
             self.wire_colors[index] = ComplicatedWires.Color.white
         self.leds[index] = led
         self.stars[index] = star
-        self.log(f'Overwrote wire {index + 1} with {self.wire_to_string(index)}')
+        self.log(
+            f'Overwrote wire {index + 1} with {self.wire_to_string(index)}')
 
     def get_cut_combinations(self):
         combinations = []
@@ -143,7 +149,8 @@ class ComplicatedWires(modules.Module):
         return combinations
 
     def get_svg(self, led):
-        needed_gradients = {coloring for coloring in self.wire_colors if isinstance(coloring, tuple)}
+        needed_gradients = {
+            coloring for coloring in self.wire_colors if isinstance(coloring, tuple)}
 
         svg = '<svg viewBox="0 0 348 348" fill="#fff" stroke="none" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">'
         if needed_gradients:
@@ -152,25 +159,27 @@ class ComplicatedWires(modules.Module):
                 svg += f'<linearGradient id="{gradient[0].name}-{gradient[1].name}" x1="0%" x2="5%" y1="0%" y2="100%">'
                 for percent in range(0, 100, 20):
                     svg += (f'<stop offset="{percent}%" stop-color="{gradient[0].value}"/>'
-                        f'<stop offset="{percent + 10}%" stop-color="{gradient[0].value}"/>'
-                        f'<stop offset="{percent + 10}%" stop-color="{gradient[1].value}"/>'
-                        f'<stop offset="{percent + 20}%" stop-color="{gradient[1].value}"/>')
+                            f'<stop offset="{percent + 10}%" stop-color="{gradient[0].value}"/>'
+                            f'<stop offset="{percent + 10}%" stop-color="{gradient[1].value}"/>'
+                            f'<stop offset="{percent + 20}%" stop-color="{gradient[1].value}"/>')
                 svg += '</linearGradient>'
             svg += '</defs>'
         svg += ('<path stroke="#000" stroke-width="2" d="M5 5h338v388h-338z"/>'
-            '<path stroke="#000" stroke-width="2" fill="#888" d="M29 29v58h224v-58zM29 250h274v74h-274z"/>'
-            '<path stroke="#000" stroke-width="2" d="M29 58h224M29 279h274M39 284h29l5 5v29h-29l-5 -5zM83 284h29l5 5v29h-29l-5 -5zM127 284h29l5 5v29h-29l-5 -5zM171 284h29l5 5v29h-29l-5 -5zM215 284h29l5 5v29h-29l-5 -5zM259 284h29l5 5v29h-29l-5 -5z"/>'
-            f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15" stroke-width="2"/>')
+                '<path stroke="#000" stroke-width="2" fill="#888" d="M29 29v58h224v-58zM29 250h274v74h-274z"/>'
+                '<path stroke="#000" stroke-width="2" d="M29 58h224M29 279h274M39 284h29l5 5v29h-29l-5 -5zM83 284h29l5 5v29h-29l-5 -5zM127 284h29l5 5v29h-29l-5 -5zM171 284h29l5 5v29h-29l-5 -5zM215 284h29l5 5v29h-29l-5 -5zM259 284h29l5 5v29h-29l-5 -5z"/>'
+                f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15" stroke-width="2"/>')
 
         for position in range(6):
             if position in self.positions:
-                color = "#fec" if self.leds[self.positions.index(position)] else "#444"
+                color = "#fec" if self.leds[self.positions.index(
+                    position)] else "#444"
             else:
                 color = "#444"
             svg += f'<circle fill="{color}" r="8.5" cx="{50 + position * 35}" cy="43" stroke="#000" stroke-width="2"/>'
 
         for color, star, cut, position in zip(self.wire_colors, self.stars, self.cut, self.positions):
-            path = (ComplicatedWires.PATHS_CUT if cut else ComplicatedWires.PATHS_UNCUT)[position]
+            path = (ComplicatedWires.PATHS_CUT if cut else ComplicatedWires.PATHS_UNCUT)[
+                position]
             if isinstance(color, tuple):
                 color_str = f'url(#{color[0].name}-{color[1].name})'
             else:

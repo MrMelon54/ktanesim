@@ -1,18 +1,21 @@
 import random
 import modules
 
+
 class WhosOnFirst(modules.Module):
     identifiers = ['whosOnFirst']
     display_name = "Who's on First"
     manual_name = "Who\u2019s on First"
     help_text = "`{cmd} push you're` or `{cmd} press press` to push a button. The phrase must match exactly."
     module_score = 4
-    transform='none'
+    transform = 'none'
     vanilla = True
 
     BUTTON_GROUPS = [
-        ["READY", "FIRST", "NO", "BLANK", "NOTHING", "YES", "WHAT", "UHHH", "LEFT", "RIGHT", "MIDDLE", "OKAY", "WAIT", "PRESS"],
-        ["YOU", "YOU ARE", "YOUR", "YOU'RE", "UR", "U", "UH HUH", "UH UH", "WHAT?", "DONE", "NEXT", "HOLD", "SURE", "LIKE"],
+        ["READY", "FIRST", "NO", "BLANK", "NOTHING", "YES", "WHAT",
+            "UHHH", "LEFT", "RIGHT", "MIDDLE", "OKAY", "WAIT", "PRESS"],
+        ["YOU", "YOU ARE", "YOUR", "YOU'RE", "UR", "U", "UH HUH",
+            "UH UH", "WHAT?", "DONE", "NEXT", "HOLD", "SURE", "LIKE"],
     ]
 
     DISPLAY_WORDS = {
@@ -84,7 +87,7 @@ class WhosOnFirst(modules.Module):
         self.buttons = random.sample(random.choice(self.BUTTON_GROUPS), 6)
         self.log(f"State randomized. Stage {self.stage}. Display: {self.display}. Buttons: {' '.join(self.buttons)}")
 
-    def button_replace_values(self,v):
+    def button_replace_values(self, v):
         return v
 
     @modules.check_solve_cmd
@@ -93,7 +96,7 @@ class WhosOnFirst(modules.Module):
             return await self.usage(author)
         button = ' '.join(parts).upper()
 
-        button=self.button_replace_values(button)
+        button = self.button_replace_values(button)
 
         if button not in sum(self.BUTTON_GROUPS, []):
             return await self.bomb.channel.send(f"{author.mention} \"{button}\" isn't a valid word.")

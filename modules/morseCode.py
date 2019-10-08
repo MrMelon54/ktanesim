@@ -35,6 +35,7 @@ MORSE_CODE = {
 
 DOT_LENGTH = 45
 
+
 class MorseCode(modules.Module):
     identifiers = ['morseCode']
     display_name = "Morse Code"
@@ -101,7 +102,8 @@ class MorseCode(modules.Module):
                 add(off, 3)
                 first_signal = True
                 for signal in MORSE_CODE[letter]:
-                    if not first_signal: add(off, 1)
+                    if not first_signal:
+                        add(off, 1)
                     first_signal = False
                     add(on, 3 if signal == '-' else 1)
             add(off, 4)
@@ -114,7 +116,8 @@ class MorseCode(modules.Module):
             return await self.usage(author)
 
         freq = parts[0]
-        if freq.startswith('3.'): freq = freq[2:]
+        if freq.startswith('3.'):
+            freq = freq[2:]
 
         if not freq.isdigit() or len(freq) != 3 or (freq[0] != "5" or freq[-1] not in '25') and freq != "600":
             return await self.usage(author)

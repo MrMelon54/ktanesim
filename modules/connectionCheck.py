@@ -1,6 +1,7 @@
 import modules
 import random
 
+
 class ConnectionCheck(modules.Module):
     identifiers = ['connectionCheck']
     display_name = "Connection Check"
@@ -67,10 +68,10 @@ class ConnectionCheck(modules.Module):
 
     def get_svg(self, led):
         svg = ('<svg viewBox="0 0 348 348" fill="#fff" stroke-width="2" stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="10">'
-            '<path stroke="#000" d="M5 5h338v338h-338z"/>'
-            f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
-            '<path stroke="#000" d="M38 45h200v60h-200z"/>'
-            '<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:28pt;" x="138" y="89">CHECK</text>')
+               '<path stroke="#000" d="M5 5h338v338h-338z"/>'
+               f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
+               '<path stroke="#000" d="M38 45h200v60h-200z"/>'
+               '<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:28pt;" x="138" y="89">CHECK</text>')
 
         for x, y, pair, swap, on in zip([18, 180, 18, 180], [144, 144, 243, 243], self.pairs, self.swap, self.on):
             if swap:
@@ -79,9 +80,9 @@ class ConnectionCheck(modules.Module):
                 a, b = pair
 
             svg += (f'<path stroke="#000" d="M{x} {y}h150v60h-150z"/>'
-                f'<path stroke="#000" fill="{"#0f0" if on else "#f00"}" d="M{x + 54} {y}h42v60h-42z"/>'
-                f'<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:32pt;" x="{x + 27}" y="{y + 46}">{a}</text>'
-                f'<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:32pt;" x="{x + 123}" y="{y + 46}">{b}</text>')
+                    f'<path stroke="#000" fill="{"#0f0" if on else "#f00"}" d="M{x + 54} {y}h42v60h-42z"/>'
+                    f'<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:32pt;" x="{x + 27}" y="{y + 46}">{a}</text>'
+                    f'<text text-anchor="middle" fill="#000" style="font-family:sans-serif;font-size:32pt;" x="{x + 123}" y="{y + 46}">{b}</text>')
         svg += '</svg>'
         return svg
 

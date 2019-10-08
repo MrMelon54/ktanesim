@@ -5,6 +5,7 @@ import modules
 from functools import lru_cache
 from wand.image import Image
 
+
 class SimonSays(modules.Module):
     identifiers = ['simonSays']
     display_name = "Simon Says"
@@ -20,7 +21,7 @@ class SimonSays(modules.Module):
         yellow = enum.auto()
 
     MAPPING = {
-    # strikes, vowel
+        # strikes, vowel
         (0, True):  {Color.red: Color.blue, Color.blue: Color.red, Color.green: Color.yellow, Color.yellow: Color.green},
         (1, True):  {Color.red: Color.yellow, Color.blue: Color.green, Color.green: Color.blue, Color.yellow: Color.red},
         (2, True):  {Color.red: Color.green, Color.blue: Color.red, Color.green: Color.yellow, Color.yellow: Color.blue},
@@ -65,7 +66,7 @@ class SimonSays(modules.Module):
             add(None, 200)
 
             first = True
-            for color in self.sequence[:self.progress+1]:
+            for color in self.sequence[:self.progress + 1]:
                 if not first:
                     add(None, 10)
 
@@ -95,7 +96,7 @@ class SimonSays(modules.Module):
         self.log(f"Parsed: {' '.join(color.name for color in parsed)}")
         small_progress = 0
         solution = self.get_solution()
-        success = False # whether the input advanced the stage of the module
+        success = False  # whether the input advanced the stage of the module
         for press in parsed:
             expected = solution[small_progress]
             self.log(f"Pressing {press.name}, expected {expected.name}")
@@ -120,7 +121,8 @@ class SimonSays(modules.Module):
 
     def get_solution(self):
         strikes = self.bomb.strikes
-        if strikes > 2: strikes = 2
+        if strikes > 2:
+            strikes = 2
         vowel = self.bomb.has_vowel()
         mapping = SimonSays.MAPPING[strikes, vowel]
         solution = [mapping[color] for color in self.sequence]

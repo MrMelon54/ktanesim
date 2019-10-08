@@ -4,6 +4,7 @@ import enum
 import modules
 import edgework
 
+
 class Wires(modules.Module):
     identifiers = ['wires']
     display_name = "Wires"
@@ -14,10 +15,10 @@ class Wires(modules.Module):
 
     @enum.unique
     class Color(enum.Enum):
-        black =  "#000"
-        blue =   "#00f"
-        red =    "#f00"
-        white =  "#fff"
+        black = "#000"
+        blue = "#00f"
+        red = "#f00"
+        white = "#fff"
         yellow = "#ff0"
 
     PATHS_UNCUT = [
@@ -41,7 +42,8 @@ class Wires(modules.Module):
     def __init__(self, bomb, ident):
         super().__init__(bomb, ident)
         wire_count = random.randint(3, 8)
-        if wire_count > 6: wire_count = 6
+        if wire_count > 6:
+            wire_count = 6
         self.positions = sorted(random.sample(range(6), wire_count))
         self.cut = [False] * wire_count
         self.colors = []
@@ -72,7 +74,7 @@ class Wires(modules.Module):
                 await self.bomb.channel.send(f"There are only {len(self.colors)} wires. How on earth am I supposed to cut wire {parts[0]}?")
             else:
                 expected = self.get_solution()
-                self.log(f"player cut wire {wire+1}. expected wire {expected+1}")
+                self.log(f"Player cut wire {wire+1}. expected wire {expected+1}")
                 self.cut[wire] = True
                 if expected == wire:
                     await self.handle_solve(author)

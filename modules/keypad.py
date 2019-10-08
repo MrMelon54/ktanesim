@@ -1,6 +1,7 @@
 import random
 import modules
 
+
 class Keypad(modules.Module):
     identifiers = ['keypad']
     display_name = "Keypad"
@@ -19,7 +20,8 @@ class Keypad(modules.Module):
             ["euro", "q", "mirrorc", "ce", "hollowstar", "h", "questionmark"],
             ["copyright", "eye", "ce", "k", "r", "lambda", "hollowstar"],
             ["six", "paragraph", "bt", "kitty", "k", "questionmark", "smiley"],
-            ["pitchfork", "smiley", "bt", "normalc", "paragraph", "three", "fullstar"],
+            ["pitchfork", "smiley", "bt", "normalc",
+                "paragraph", "three", "fullstar"],
             ["six", "euro", "tracks", "ae", "pitchfork", "n", "omega"]])
 
         self.log(f"Precedence list: {' '.join(self.column)}")
@@ -36,18 +38,18 @@ class Keypad(modules.Module):
 
     def get_svg(self, led):
         return (f'<svg viewBox="0 0 348 348" fill="#fff" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink">'
-            f'<path stroke="#000" stroke-width="2" d="M5 5h338v338h-338z"/>'
-            f'<path stroke="#000" d="M38 96h100v100h-100zM144 96h100v100h-100zM38 202h100v100h-100zM144 202h100v100h-100z"/>'
-            f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15" stroke-width="2"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[0]}.png" width="90" height="90" x="43" y="105"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[1]}.png" width="90" height="90" x="149" y="105"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[2]}.png" width="90" height="90" x="43" y="211"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[3]}.png" width="90" height="90" x="149" y="211"/>'
-            f'<path stroke="#000" fill="{self.led[0]}" stroke-width="2" d="M78 102h20v6h-20z"/>'
-            f'<path stroke="#000" fill="{self.led[1]}" stroke-width="2" d="M184 102h20v6h-20z"/>'
-            f'<path stroke="#000" fill="{self.led[2]}" stroke-width="2" d="M78 208h20v6h-20z"/>'
-            f'<path stroke="#000" fill="{self.led[3]}" stroke-width="2" d="M184 208h20v6h-20z"/>'
-            f'</svg>')
+                f'<path stroke="#000" stroke-width="2" d="M5 5h338v338h-338z"/>'
+                f'<path stroke="#000" d="M38 96h100v100h-100zM144 96h100v100h-100zM38 202h100v100h-100zM144 202h100v100h-100z"/>'
+                f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15" stroke-width="2"/>'
+                f'<image xlink:href="img/keypad/{self.buttons[0]}.png" width="90" height="90" x="43" y="105"/>'
+                f'<image xlink:href="img/keypad/{self.buttons[1]}.png" width="90" height="90" x="149" y="105"/>'
+                f'<image xlink:href="img/keypad/{self.buttons[2]}.png" width="90" height="90" x="43" y="211"/>'
+                f'<image xlink:href="img/keypad/{self.buttons[3]}.png" width="90" height="90" x="149" y="211"/>'
+                f'<path stroke="#000" fill="{self.led[0]}" stroke-width="2" d="M78 102h20v6h-20z"/>'
+                f'<path stroke="#000" fill="{self.led[1]}" stroke-width="2" d="M184 102h20v6h-20z"/>'
+                f'<path stroke="#000" fill="{self.led[2]}" stroke-width="2" d="M78 208h20v6h-20z"/>'
+                f'<path stroke="#000" fill="{self.led[3]}" stroke-width="2" d="M184 208h20v6h-20z"/>'
+                f'</svg>')
 
     @modules.check_solve_cmd
     async def cmd_press(self, author, parts):
@@ -74,7 +76,8 @@ class Keypad(modules.Module):
         while input_ and not self.solved:
             press = input_.pop(0)
             expected = self.solution[self.progress]
-            self.log(f"Stage {self.progress}, expected {expected}, got {press}")
+            self.log(
+                f"Stage {self.progress}, expected {expected}, got {press}")
             if expected == press:
                 self.log("Correct button pressed")
                 self.led[press] = '#0f0'
@@ -84,7 +87,8 @@ class Keypad(modules.Module):
                     return
             else:
                 if self.led[press] == '#0f0':
-                    self.log(f"Button {press} has already been pressed, ignoring")
+                    self.log(
+                        f"Button {press} has already been pressed, ignoring")
                 else:
                     self.led[press] = '#f00'
                     await self.handle_strike(author)

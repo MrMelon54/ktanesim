@@ -4,13 +4,14 @@ import asyncio
 import edgework
 import modules
 
+
 class Button(modules.Module):
     identifiers = ['button']
     display_name = "The Button"
     manual_name = "The Button"
     help_text = "`{cmd} tap` to tap, `{cmd} hold` to hold, `{cmd} release 7` to release when any digit of the timer is 7."
     module_score = 1
-    vanilla= True
+    vanilla = True
 
     class Color(enum.Enum):
         red = "#f00"
@@ -52,8 +53,8 @@ class Button(modules.Module):
             svg += '<path fill="#000" fill-opacity="0.1" stroke="#000" stroke-width="2" d="M17 71h225v235H17z"/>'
         else:
             svg += ('<path stroke-width="1.5" stroke="#000" fill="#000" fill-opacity="0.1" d="M17 63l24-36h177l24 36z"/>'
-                '<path stroke-width="1.5" stroke="#000" fill="#000" fill-opacity="0.1" d="M17 63l16-8l20-20l-12-8zm36-28l-12-8h177l-12 8zm153 0l12-8l24 36l-16-8z"/>'
-                '<path stroke-width="2" stroke="#000" fill="#000" fill-opacity="0.1" d="M33 55l20-20h153l20 20z"/>')
+                    '<path stroke-width="1.5" stroke="#000" fill="#000" fill-opacity="0.1" d="M17 63l16-8l20-20l-12-8zm36-28l-12-8h177l-12 8zm153 0l12-8l24 36l-16-8z"/>'
+                    '<path stroke-width="2" stroke="#000" fill="#000" fill-opacity="0.1" d="M33 55l20-20h153l20 20z"/>')
 
         svg += f'<circle fill="{self.button_color.value}" stroke="#000" stroke-width="2" r="100" cx="130" cy="189"/>'
         text_color = '#fff' if self.button_color in Button.WHITE_TEXT else '#000'
@@ -99,10 +100,12 @@ class Button(modules.Module):
                 await asyncio.sleep(0.5)
                 time = self.bomb.get_time_formatted()
             expected = self.get_release_digit()
-            self.log("Releasing at {:s}, expected {:d}, player answered {:s}".format(time, expected, answer))
+            self.log("Releasing at {:s}, expected {:d}, player answered {:s}".format(
+                time, expected, answer))
             self.strip_color = None
             should_hold = self.should_hold()
-            self.log("should{:s} hold".format("n't" if not should_hold else ''))
+            self.log("should{:s} hold".format(
+                "n't" if not should_hold else ''))
             if should_hold and str(expected) in time:
                 await self.handle_solve(author)
             else:

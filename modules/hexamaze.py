@@ -3,6 +3,7 @@ import random
 import enum
 import math
 
+
 class Hexamaze(modules.Module):
     identifiers = ['hexamaze']
     display_name = "Hexamaze"
@@ -141,12 +142,20 @@ class Hexamaze(modules.Module):
     @staticmethod
     def get_neighbor(coords, direction):
         q, r = coords
-        if direction == 0: q -= 1
-        elif direction == 1: r -= 1
-        elif direction == 2: q += 1; r -= 1
-        elif direction == 3: q += 1
-        elif direction == 4: r += 1
-        elif direction == 5: q -= 1; r += 1
+        if direction == 0:
+            q -= 1
+        elif direction == 1:
+            r -= 1
+        elif direction == 2:
+            q += 1
+            r -= 1
+        elif direction == 3:
+            q += 1
+        elif direction == 4:
+            r += 1
+        elif direction == 5:
+            q -= 1
+            r += 1
         return q, r
 
     @staticmethod
@@ -177,7 +186,8 @@ class Hexamaze(modules.Module):
     @staticmethod
     def is_oob(coords):
         q, r = coords
-        if q not in range(-3, 4): return True
+        if q not in range(-3, 4):
+            return True
         r_start, r_end = Hexamaze.vertical_range(q, 3)
         return r not in range(r_start, r_end + 1)
 
@@ -188,8 +198,10 @@ class Hexamaze(modules.Module):
         self.maze_center = q, r
         self.maze_rotation = random.randint(0, 5)
         self.pawn_color = random.randint(0, 5)
-        self.solution_edge = Hexamaze.EDGES[(self.maze_rotation + self.pawn_color) % 6]
-        self.solution_directions = [(self.pawn_color + self.maze_rotation + x) % 6 for x in range(2)]
+        self.solution_edge = Hexamaze.EDGES[(
+            self.maze_rotation + self.pawn_color) % 6]
+        self.solution_directions = [
+            (self.pawn_color + self.maze_rotation + x) % 6 for x in range(2)]
         self.visible_walls = set()
 
         position_options = set()
@@ -205,7 +217,8 @@ class Hexamaze(modules.Module):
         # prevent straight-line solutions
         for edge_cell in self.solution_edge:
             for direction in self.solution_directions:
-                if self.small_has_wall(edge_cell, direction): continue
+                if self.small_has_wall(edge_cell, direction):
+                    continue
                 # prepare for the next stage of starting position pruning: save edge cells that are not surrounded by walls in the directions we care about
                 if edge_cell not in floodfill_distances:
                     floodfill_distances[edge_cell] = 1
@@ -219,7 +232,8 @@ class Hexamaze(modules.Module):
                         pass
 
                     cell = self.can_move(cell, backwards)
-                    if not cell: break
+                    if not cell:
+                        break
 
         self.log(f"{len(position_options)} options after straight-line pruning")
 
@@ -232,7 +246,8 @@ class Hexamaze(modules.Module):
             distance = floodfill_distances[cell]
             for neighbor in self.possible_moves(cell):
                 # because floodfill_queue is a queue, the algorithm will never find a shorter path
-                if neighbor in floodfill_distances: continue
+                if neighbor in floodfill_distances:
+                    continue
 
                 try:
                     position_options.remove(neighbor)
@@ -247,19 +262,24 @@ class Hexamaze(modules.Module):
         self.log(f"{len(position_options)} options after solution length pruning")
         self.position = random.choice(list(position_options))
         self.log(f"Maze center: {self.maze_center!r}. "
-            f"Maze rotation: {self.maze_rotation}. "
-            f"Pawn color: {['red', 'yellow', 'green', 'cyan', 'blue', 'pink'][self.pawn_color]}. "
-            f"Starting position: {self.position!r}. "
-            f"Solution edge: {self.solution_edge!r}. "
-            f"Solution directions: {self.solution_directions!r}.")
+                 f"Maze rotation: {self.maze_rotation}. "
+                 f"Pawn color: {['red', 'yellow', 'green', 'cyan', 'blue', 'pink'][self.pawn_color]}. "
+                 f"Starting position: {self.position!r}. "
+                 f"Solution edge: {self.solution_edge!r}. "
+                 f"Solution directions: {self.solution_directions!r}.")
 
     def small2big(self, coords):
         q, r = coords
-        if self.maze_rotation == 1: q, r = q + r, -q
-        elif self.maze_rotation == 2: q, r = r, -q - r
-        elif self.maze_rotation == 3: q, r = -q, -r
-        elif self.maze_rotation == 4: q, r = -q - r, q
-        elif self.maze_rotation == 5: q, r = -r, q + r
+        if self.maze_rotation == 1:
+            q, r = q + r, -q
+        elif self.maze_rotation == 2:
+            q, r = r, -q - r
+        elif self.maze_rotation == 3:
+            q, r = -q, -r
+        elif self.maze_rotation == 4:
+            q, r = -q - r, q
+        elif self.maze_rotation == 5:
+            q, r = -r, q + r
         return q + self.maze_center[0], r + self.maze_center[1]
 
     def small_has_wall(self, coords, direction):
@@ -275,7 +295,8 @@ class Hexamaze(modules.Module):
     def possible_moves(self, from_):
         for direction in range(6):
             move = self.can_move(from_, direction)
-            if move and not Hexamaze.is_oob(move): yield move
+            if move and not Hexamaze.is_oob(move):
+                yield move
 
     EDGE = 23
     YSCALE = EDGE * math.sqrt(3) / 2
@@ -318,15 +339,15 @@ class Hexamaze(modules.Module):
             return 174 + q * Hexamaze.XSCALE, 174 + (q + 2 * r) * Hexamaze.YSCALE
 
         svg = ('<svg viewBox="0 0 348 348" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink">'
-            '<path stroke="#000" fill="#fff" d="M5 5h338v338h-338z"/>'
-            f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
-            f'<path id="display" stroke="#ccc" stroke-width="18" d="{Hexamaze.BORDER_PATH}"/>'
-            f'<path stroke="#ccc" stroke-width="12" d="{Hexamaze.BUTTON_PATH}"/>'
-            f'<path fill="#000" d="{Hexamaze.BORDER_PATH}{Hexamaze.BUTTON_PATH}"/>'
-            '<clipPath id="clip">'
-            '<use xlink:href="#display"/>'
-            '</clipPath>'
-            '<g clip-path="url(#clip)">')
+               '<path stroke="#000" fill="#fff" d="M5 5h338v338h-338z"/>'
+               f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15"/>'
+               f'<path id="display" stroke="#ccc" stroke-width="18" d="{Hexamaze.BORDER_PATH}"/>'
+               f'<path stroke="#ccc" stroke-width="12" d="{Hexamaze.BUTTON_PATH}"/>'
+               f'<path fill="#000" d="{Hexamaze.BORDER_PATH}{Hexamaze.BUTTON_PATH}"/>'
+               '<clipPath id="clip">'
+               '<use xlink:href="#display"/>'
+               '</clipPath>'
+               '<g clip-path="url(#clip)">')
 
         for cell in Hexamaze.grid_iterate():
             x, y = to_image_coords(cell)
@@ -342,27 +363,27 @@ class Hexamaze(modules.Module):
                     svg += f'<circle stroke="#fff" r="{Hexamaze.YSCALE * MARKING_SCALE}" cx="{x}" cy="{y}"/>'
                 elif marking == Hexamaze.Marking.hexagon:
                     svg += (f'<path stroke="#fff" d="M{x - Hexamaze.EDGE * MARKING_SCALE / 2} {y - Hexamaze.YSCALE * MARKING_SCALE}'
-                        f'h{Hexamaze.EDGE * MARKING_SCALE}'
-                        f'l{Hexamaze.EDGE * MARKING_SCALE / 2} {Hexamaze.YSCALE * MARKING_SCALE}'
-                        f'-{Hexamaze.EDGE * MARKING_SCALE / 2} {Hexamaze.YSCALE * MARKING_SCALE}'
-                        f'h-{Hexamaze.EDGE * MARKING_SCALE}'
-                        f'l-{Hexamaze.EDGE * MARKING_SCALE / 2}-{Hexamaze.YSCALE * MARKING_SCALE}z"/>')
+                            f'h{Hexamaze.EDGE * MARKING_SCALE}'
+                            f'l{Hexamaze.EDGE * MARKING_SCALE / 2} {Hexamaze.YSCALE * MARKING_SCALE}'
+                            f'-{Hexamaze.EDGE * MARKING_SCALE / 2} {Hexamaze.YSCALE * MARKING_SCALE}'
+                            f'h-{Hexamaze.EDGE * MARKING_SCALE}'
+                            f'l-{Hexamaze.EDGE * MARKING_SCALE / 2}-{Hexamaze.YSCALE * MARKING_SCALE}z"/>')
                 elif marking == Hexamaze.Marking.triangle_up:
                     svg += (f'<path stroke="#fff" d="M{x} {y - Hexamaze.YSCALE * MARKING_SCALE}'
-                        f'l{Hexamaze.EDGE * MARKING_SCALE * 3 / 4} {Hexamaze.YSCALE * MARKING_SCALE * 3 / 2}'
-                        f'h-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
+                            f'l{Hexamaze.EDGE * MARKING_SCALE * 3 / 4} {Hexamaze.YSCALE * MARKING_SCALE * 3 / 2}'
+                            f'h-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
                 elif marking == Hexamaze.Marking.triangle_down:
                     svg += (f'<path stroke="#fff" d="M{x} {y + Hexamaze.YSCALE * MARKING_SCALE}'
-                        f'l{Hexamaze.EDGE * MARKING_SCALE * 3 / 4}-{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2}'
-                        f'h-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
+                            f'l{Hexamaze.EDGE * MARKING_SCALE * 3 / 4}-{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2}'
+                            f'h-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
                 elif marking == Hexamaze.Marking.triangle_left:
                     svg += (f'<path stroke="#fff" d="M{x - Hexamaze.YSCALE * MARKING_SCALE} {y}'
-                        f'l{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2} {Hexamaze.EDGE * MARKING_SCALE * 3 / 4}'
-                        f'v-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
+                            f'l{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2} {Hexamaze.EDGE * MARKING_SCALE * 3 / 4}'
+                            f'v-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
                 elif marking == Hexamaze.Marking.triangle_right:
                     svg += (f'<path stroke="#fff" d="M{x + Hexamaze.YSCALE * MARKING_SCALE} {y}'
-                        f'l-{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2} {Hexamaze.EDGE * MARKING_SCALE * 3 / 4}'
-                        f'v-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
+                            f'l-{Hexamaze.YSCALE * MARKING_SCALE * 3 / 2} {Hexamaze.EDGE * MARKING_SCALE * 3 / 4}'
+                            f'v-{Hexamaze.EDGE * MARKING_SCALE * 3 / 2}z"/>')
                 else:
                     assert False
             svg += f'<circle cx="{x}" cy="{y}" r="{6 if pawn else 4}" fill="{Hexamaze.PAWN_COLORS[self.pawn_color] if pawn else "#ccc"}"/>'
@@ -379,8 +400,8 @@ class Hexamaze(modules.Module):
             else:
                 assert False
         svg += (f'<path stroke-linecap="round" stroke-width="4" stroke="#fff" d="{wall_path}"/>'
-            '</g>'
-            '</svg>')
+                '</g>'
+                '</svg>')
         return svg
 
     MOVE_STRINGS = {
@@ -417,7 +438,8 @@ class Hexamaze(modules.Module):
             else:
                 self.log("WALL!")
                 if not Hexamaze.is_oob(Hexamaze.get_neighbor(self.position, move)):
-                    self.visible_walls.add(Hexamaze.normalize_wall(self.position, move))
+                    self.visible_walls.add(
+                        Hexamaze.normalize_wall(self.position, move))
                 return await self.handle_strike(author)
             self.log(f"Position: {self.position}")
 

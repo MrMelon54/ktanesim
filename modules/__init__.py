@@ -18,5 +18,5 @@ for module_file in glob(path_join(dirname(__file__), "*.py")):
     importlib.import_module('modules.' + module_name)
 
 async def cmd_modules(channel, author, parts):
-    list_ = lambda d: ', '.join(f"`{x}`" for x in d)
+    def list_(d): return ', '.join(f"`{x}`" for x in d)
     await channel.send(f"Available modules:\nVanilla: {list_(VANILLA_MODULES)}\nModded: {list_(MODDED_MODULES)}")
