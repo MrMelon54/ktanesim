@@ -11,7 +11,6 @@ class Button(modules.Module):
     manual_name = "The Button"
     help_text = "`{cmd} tap` to tap, `{cmd} hold` to hold, `{cmd} release 7` to release when any digit of the timer is 7."
     module_score = 1
-    vanilla = True
 
     class Color(enum.Enum):
         red = "#f00"

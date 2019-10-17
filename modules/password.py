@@ -4,14 +4,12 @@ import modules
 import random
 import cairosvg
 
-
 class Password(modules.Module):
     identifiers = ['password']
     display_name = "Password"
     manual_name = "Password"
     help_text = "`{cmd} cycle 3` - cycle the third column. `{cmd} cycle 1 3 5`, `{cmd} cycle 135` - cycle multiple columns. `{cmd} cycle` - cycle all columns. `{cmd} submit water` - try to submit a word. "
     module_score = 2
-    vanilla = True
 
     WORDS = [
         "about", "after", "again", "below", "could",

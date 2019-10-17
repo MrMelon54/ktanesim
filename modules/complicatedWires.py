@@ -11,7 +11,6 @@ class ComplicatedWires(modules.Module):
     manual_name = "Complicated Wires"
     help_text = "`{cmd} cut 3` - cut the third wire. `{cmd} cut 1 4 6` - cut multiple wires. `{cmd} cut 146` - cut multiple wires, shorter. Wires are counted left to right, empty spaces excluded."
     module_score = 3
-    vanilla = True
 
     @enum.unique
     class Color(enum.Enum):

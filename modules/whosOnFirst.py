@@ -1,7 +1,6 @@
 import random
 import modules
 
-
 class WhosOnFirst(modules.Module):
     identifiers = ['whosOnFirst']
     display_name = "Who's on First"
@@ -9,7 +8,6 @@ class WhosOnFirst(modules.Module):
     help_text = "`{cmd} push you're` or `{cmd} press press` to push a button. The phrase must match exactly."
     module_score = 4
     transform = 'none'
-    vanilla = True
 
     BUTTON_GROUPS = [
         ["READY", "FIRST", "NO", "BLANK", "NOTHING", "YES", "WHAT",

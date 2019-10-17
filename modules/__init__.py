@@ -1,12 +1,16 @@
 from os.path import basename, dirname, join as path_join
 from glob import glob
 import importlib
+import inspect
+
+LIST_OF_VANILLA_MODULES=['Button','ComplicatedWires','Keypad','Maze','Memory','MorseCode','Password','SimonSays','WhosOnFirst','Wires','WireSequence']
 
 VANILLA_MODULES = {}
 MODDED_MODULES = {}
 
 def register_module(module):
-    category = VANILLA_MODULES if module.vanilla else MODDED_MODULES
+    module_name=inspect.getmro(module)[0].__name__
+    category = VANILLA_MODULES if module_name in LIST_OF_VANILLA_MODULES else MODDED_MODULES
     for identifier in module.identifiers:
         category[identifier] = module
 
